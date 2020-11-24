@@ -190,6 +190,12 @@ def create(req, sock, client, server, cfg):
     return resp, environ
 
 
+class DebugException(Exception):
+    def __init__(self, message, data):
+        super(DebugException, self).__init__(message)
+        self.data = data
+
+
 class Response(object):
 
     def __init__(self, req, sock, cfg):
@@ -219,7 +225,7 @@ class Response(object):
         # DEBUG: START
         if not hasattr(self, 'status_code'):
             data = vars(self)
-            raise Exception(message="Response object has no status_code", data=data)
+            raise DebugException(message="Response object has no status_code", data=data)
         # DEBUG: END
         if self.status_code < 200 or self.status_code in (204, 304):
             return False
