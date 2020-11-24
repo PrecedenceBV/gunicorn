@@ -224,7 +224,14 @@ class Response(object):
             return False
         # DEBUG: START
         if not hasattr(self, 'status_code'):
-            data = vars(self)
+            _req = getattr(self, 'req', None)
+            _sock = getattr(self, 'sock', None)
+
+            data = dict(
+                response=vars(self),
+                request=vars(_req),
+                sock=vars(_sock)
+            )
             raise DebugException(message="Response object has no status_code", data=data)
         # DEBUG: END
         if self.status_code < 200 or self.status_code in (204, 304):
