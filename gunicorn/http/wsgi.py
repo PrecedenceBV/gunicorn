@@ -216,6 +216,11 @@ class Response(object):
             return False
         if self.req.method == 'HEAD':
             return False
+        # DEBUG: START
+        if not hasattr(self, 'status_code'):
+            data = vars(self)
+            raise Exception(message="Response object has no status_code", data=data)
+        # DEBUG: END
         if self.status_code < 200 or self.status_code in (204, 304):
             return False
         return True
